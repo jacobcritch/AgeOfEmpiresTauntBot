@@ -3,6 +3,7 @@
 
 import logging
 import json
+import os
 from time import sleep
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
@@ -36,7 +37,7 @@ def send_taunt(update: Update, context: CallbackContext) -> None:
         reply_invalid_taunt(update)
         return
         
-    path = "/root/AgeOfEmpiresTauntBot/aoe3taunts/" + taunt_file_prefix + taunt + taunt_file_postfix
+    path = os.path.join(os.path.dirname(__file__), "aoe3taunts/" + taunt_file_prefix + taunt + taunt_file_postfix)
     try:
         with open(path, "rb") as f:
             update.message.reply_voice(f)
@@ -66,7 +67,7 @@ def is_taunt_valid(taunt: str) -> bool:
 
 # # #   Config   # # #
 def load_token_file() -> str:
-    with open("/root/AgeOfEmpiresTauntBot/config.json") as f:
+    with open(os.path.join(os.path.dirname(__file__), "config.json")) as f:
         data = json.load(f)
         return data["token"]
 # # #                # # #
